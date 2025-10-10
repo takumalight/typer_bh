@@ -1,3 +1,4 @@
+import { gameConstants } from "../constants";
 import k from "../kaplayCtx";
 
 export function loadMainMenu() {
@@ -35,7 +36,7 @@ export function loadMainMenu() {
     k.sprite("avokahtamer", { anim: "run" }),
     k.anchor("center"),
     k.pos(-startButton.width / 2 - 60, -10),
-    k.scale(2),
+    k.scale(gameConstants.SPRITE_SCALE),
     k.opacity(0)
   ]);
   startButton.onHover(() => {
@@ -66,7 +67,7 @@ export function loadMainMenu() {
     k.sprite("avokahtamer", { anim: "run" }),
     k.anchor("center"),
     k.pos(-charSelectButton.width / 2 - 60, -10),
-    k.scale(2),
+    k.scale(gameConstants.SPRITE_SCALE),
     k.opacity(0)
   ]);
   charSelectButton.onHover(() => {

@@ -10,7 +10,7 @@ k.loadSprite("avokahtamer", "graphics/characters/bh_spritesheet_at.png", {
     sliceX: 8,
     sliceY: 4,
     "anims": {
-        walk: { from: 8, to: 13, loop: true, speed: 15 },
+        walk: { from: 8, to: 13, loop: true, speed: 8 },
         run: { from: 16, to: 23, loop: true, speed: 15 },
         attack: { from: 24, to: 29, loop: false, speed: 15 }
     }
