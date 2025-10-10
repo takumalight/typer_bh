@@ -5,4 +5,5 @@ export function loadGame() {
     k.sprite("background"),
     k.pos(0)
   ]);
+  
 }

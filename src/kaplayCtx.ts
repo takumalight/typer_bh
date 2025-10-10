@@ -6,8 +6,11 @@ const k = kaplay({
     letterbox: true,
     global: false,
     debug: true,
+    debugKey: "`",
     pixelDensity: window.devicePixelRatio,
-    background: [0,0,0]
+    background: [0,0,0],
+    // scale: 1,
+    crisp: false
 });
 
 export default k;
