@@ -29,7 +29,7 @@ export function loadMainMenu() {
     }),
     k.anchor("center"),
     k.pos(k.center().x, k.center().y - 50),
-    k.color("#ffffff"),
+    k.color(gameConstants.BUTTON_DEFAULT_COLOR),
     k.area()    
   ]);
   const startButtonDecor = startButton.add([
@@ -40,11 +40,11 @@ export function loadMainMenu() {
     k.opacity(0)
   ]);
   startButton.onHover(() => {
-    startButton.color = k.rgb("#555555");
+    startButton.color = k.rgb(gameConstants.BUTTON_HOVER_COLOR);
     startButtonDecor.opacity = 1;
   });
   startButton.onHoverEnd(() => {
-    startButton.color = k.rgb("#ffffff")
+    startButton.color = k.rgb(gameConstants.BUTTON_DEFAULT_COLOR)
     startButtonDecor.opacity = 0;
   });
   startButton.onClick(() => {
@@ -60,7 +60,7 @@ export function loadMainMenu() {
     }),
     k.anchor("center"),
     k.pos(k.center().x, k.center().y + 50),
-    k.color("#ffffff"),
+    k.color(gameConstants.BUTTON_DEFAULT_COLOR),
     k.area()
   ]);
   const charSelectButtonDecor = charSelectButton.add([
@@ -71,7 +71,7 @@ export function loadMainMenu() {
     k.opacity(0)
   ]);
   charSelectButton.onHover(() => {
-    charSelectButton.color = k.rgb("#555555");
+    charSelectButton.color = k.rgb(gameConstants.BUTTON_HOVER_COLOR);
     charSelectButtonDecor.opacity = 1;
   });
   charSelectButton.onHoverEnd(() => {
