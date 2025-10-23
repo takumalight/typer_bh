@@ -1,5 +1,6 @@
 import { gameConstants } from "../constants";
 import k from "../kaplayCtx";
+import { addTextShadow } from "../utils";
 
 export function loadMainMenu() {
   k.add([
@@ -9,7 +10,7 @@ export function loadMainMenu() {
   ]);
 
   // Game Title
-  k.add([
+  const titleText = k.add([
     k.text("Boneheads Typing", {
       size: 100,
       font: "voya-nui",
@@ -18,7 +19,9 @@ export function loadMainMenu() {
     k.anchor("center"),
     k.pos(k.center().x, k.center().y-200),
     k.color("#aaaa77"),
+    k.z(gameConstants.TEXT_Z)
   ]);
+  addTextShadow(titleText);
 
   // Start Game Button
   const startButton = k.add([
@@ -30,8 +33,11 @@ export function loadMainMenu() {
     k.anchor("center"),
     k.pos(k.center().x, k.center().y - 50),
     k.color(gameConstants.BUTTON_DEFAULT_COLOR),
-    k.area()    
+    k.z(gameConstants.TEXT_Z),
+    k.area()
   ]);
+  addTextShadow(startButton);
+
   const startButtonDecor = startButton.add([
     k.sprite("avokahtamer", { anim: "run" }),
     k.anchor("center"),
@@ -61,8 +67,11 @@ export function loadMainMenu() {
     k.anchor("center"),
     k.pos(k.center().x, k.center().y + 50),
     k.color(gameConstants.BUTTON_DEFAULT_COLOR),
-    k.area()
+    k.area(),
+    k.z(gameConstants.TEXT_Z)
   ]);
+  addTextShadow(charSelectButton)
+
   const charSelectButtonDecor = charSelectButton.add([
     k.sprite("avokahtamer", { anim: "run" }),
     k.anchor("center"),

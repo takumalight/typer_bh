@@ -15,7 +15,7 @@ k.loadSprite("avokahtamer", "graphics/characters/bh_spritesheet_at.png", {
         attack: { from: 24, to: 29, loop: false, speed: 15 }
     }
 });
-// Load Sonds
+// Load Sounds
 // Load Fonts
 k.loadFont("voya-nui", "fonts/VoyaNui.ttf")
 
