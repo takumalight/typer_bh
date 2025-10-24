@@ -27,7 +27,14 @@ export function loadGame() {
   };
 
   const spawnEnemy = () => {
-    const enemy = makeEnemy(k.vec2(k.width() + 50, k.randi(600, k.height())), "axlerex");
+    const enemyList: string[] = [
+      "axlerex",
+      "foohrok",
+    ];
+
+    const randEnemy = enemyList[k.randi(enemyList.length)];
+
+    const enemy = makeEnemy(k.vec2(k.width() + 50, k.randi(600, k.height())), randEnemy);
     addWord(enemy);
     enemy.onUpdate(() => {
       enemy.move(-25, 0);

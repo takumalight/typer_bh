@@ -16,13 +16,23 @@ k.loadSprite("avokahtamer", "graphics/characters/bh_spritesheet_at.png", {
         attack: { from: 24, to: 29, loop: false, speed: 15 }
     }
 });
-k.loadSprite("axlerex", "/graphics/enemies/new_axlerex.png", {
+k.loadSprite("axlerex", "graphics/enemies/new_axlerex.png", {
     sliceX: 8,
     sliceY: 4,
     "anims": {
         move: { from: 0, to: 5, loop: true, speed: 8},
-        attack: { from: 7, to: 13, loop: false, speed: 8},
+        attack: { from: 7, to: 13, loop: false, speed: 8 },
         die: { from: 16, to: 23, loop: false, speed: 8 }
+    }
+});
+k.loadSprite("foohrok", "graphics/enemies/foohrok_roll.png", {
+    sliceX: 8,
+    sliceY: 4,
+    "anims": {
+        move: { from: 0, to: 7, loop: true, speed: 8 },
+        unroll: { from: 8, to: 11, loop: false, speed: 8 },
+        attack: { from: 12, to: 18, loop: false, speed: 8 },
+        die: { from: 19, to: 24, loop: false, speed: 8 }
     }
 });
 // Load Sounds
