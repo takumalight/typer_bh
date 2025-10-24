@@ -1,0 +1,18 @@
+export const wordBank: string[] = [
+    "gali",
+    "lewa",
+    "kopaka",
+    "matau",
+    "matoran",
+    "nokama",
+    "nuju",
+    "onewa",
+    "onua",
+    "pohatu",
+    "rahi",
+    "tahu",
+    "toa",
+    "turaga",
+    "vakama",
+    "whenua",
+];

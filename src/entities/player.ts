@@ -4,11 +4,10 @@ import { gameConstants } from "../constants";
 
 export function makePlayer(pos: Vec2, selectedCharacter: string) {
     return k.add([
-        k.sprite(selectedCharacter, { anim: "walk" }),
-        k.pos(pos),
         k.anchor("bot"),
-        k.scale(gameConstants.SPRITE_SCALE),
         k.animate(),
-        k.color()
+        k.pos(pos),
+        k.scale(gameConstants.SPRITE_SCALE),
+        k.sprite(selectedCharacter, { anim: "walk" }),
     ]);
 }
