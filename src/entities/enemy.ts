@@ -29,16 +29,22 @@ type EnemyData = {
 export function makeEnemy(): Enemy {
 	const enemyData: Record<string, EnemyData> = {
 		axlerex: {
-			speed: 50,
+			speed: 100,
 			spawnUpperLimit: 510,
 			spawnLowerLimit: k.height(),
 			spriteName: "axlerex",
 		},
 		foohrok: {
-			speed: 100,
+			speed: 175,
 			spawnUpperLimit: 510,
 			spawnLowerLimit: k.height(),
 			spriteName: "foohrok",
+		},
+		rama: {
+			speed: 300,
+			spawnUpperLimit: 175,
+			spawnLowerLimit: 400,
+			spriteName: "rama",
 		},
 	};
 

@@ -23,8 +23,8 @@ export function loadGame() {
 			size: gameConstants.SCOREBOARD_TEXT_SIZE,
 			align: "left",
 		}),
-		k.anchor("center"),
-		k.pos(175, 50),
+		k.anchor("topleft"),
+		k.pos(35, 25),
 		k.z(gameConstants.TEXT_Z),
 	]);
 	const scoreboardShadow = addTextShadow(scoreboard);
@@ -77,7 +77,7 @@ export function loadGame() {
 				wordObj.currentIndex++;
 				if (wordObj.currentIndex == wordObj.text.length) {
 					completedWord = true;
-					score++;
+					score += wordObj.text.length * (wordObj.parent?.speed / 25);
 					const newScore = updateScore(score);
 					scoreboard.text = newScore;
 					scoreboardShadow.text = newScore;
