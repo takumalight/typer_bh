@@ -27,9 +27,7 @@ export function loadGame() {
 	const scoreboardShadow = addTextShadow(scoreboard);
 
 	// Game Logic
-	const addWord = (hostEnemy: Enemy) => {
-		const challengeWord = wordBank[k.randi(wordBank.length)];
-
+	const addWord = (hostEnemy: Enemy, challengeWord: string) => {
 		return hostEnemy.add([
 			"challengeWord",
 			k.text(challengeWord, {
@@ -53,6 +51,19 @@ export function loadGame() {
 			},
 		]);
 	};
+	const addWordShadow = (hostEnemy: Enemy, challengeWord: string) => {
+		return hostEnemy.add([
+			"challengeWordShadow",
+			k.text(challengeWord, {
+				align: "center",
+				font: "voya-nui",
+				size: gameConstants.CHALLENGE_WORD_SIZE,
+			}),
+			k.anchor("bot"),
+			k.color("#000000"),
+			k.pos(1, -hostEnemy.height + 11),
+		]);
+	};
 
 	k.onKeyPress((key) => {
 		const wordObjs = k.get("challengeWord", { recursive: true });
@@ -73,26 +84,28 @@ export function loadGame() {
 	});
 
 	// Enemies spawn at increasing rate
-	let spawnSpeed = gameConstants.INITIAL_SPAWN_RATE;
+	let spawnSpeed = gameConstants.SPAWN_INITIAL_RATE;
 	const spawnEnemy = () => {
 		const enemyList: string[] = ["axlerex", "foohrok"];
 
 		const randEnemy = enemyList[k.randi(enemyList.length)];
+		const randWord = wordBank[k.randi(wordBank.length)];
 
 		const enemy = makeEnemy(
 			k.vec2(k.width() + 50, k.randi(600, k.height())),
 			randEnemy
 		);
-		addWord(enemy);
+		addWordShadow(enemy, randWord);
+		addWord(enemy, randWord);
 		enemy.onUpdate(() => {
 			enemy.move(-50, 0);
 		});
 
-		if (spawnSpeed > 1) {
-			spawnSpeed -= 1;
-			// k.debug.log(spawnSpeed);
+		if (spawnSpeed > gameConstants.SPAWN_MIN_THRESHOLD) {
+			spawnSpeed -= gameConstants.SPAWN_REDUCE_RATE;
+			k.debug.log(spawnSpeed);
 		}
-		k.wait(spawnSpeed / 10, spawnEnemy);
+		k.wait(spawnSpeed / gameConstants.SPAWN_DIVISOR, spawnEnemy);
 	};
 
 	// Level start "cutscene"
