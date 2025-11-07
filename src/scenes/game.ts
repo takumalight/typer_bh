@@ -7,7 +7,6 @@ import { wordBank } from "../word-bank";
 import type { GameObj, TextComp } from "kaplay";
 
 export function loadGame() {
-	k.setLayers(["bg", "obj", "ui"], "obj");
 	k.add([k.sprite("background"), k.pos(0)]);
 
 	// For placing objects
@@ -28,6 +27,17 @@ export function loadGame() {
 		k.z(gameConstants.TEXT_Z),
 	]);
 	const scoreboardShadow = addTextShadow(scoreboard);
+
+	// Fail zone
+	const failZone = k.add([
+		"failZone",
+		k.area(),
+		k.pos(-175, 0),
+		k.rect(10, k.height()),
+	]);
+	failZone.onCollide("enemy", () => {
+		k.go("game-over");
+	});
 
 	// Game Logic
 	const addWord = (hostEnemy: Enemy, challengeWord: string) => {
@@ -127,9 +137,5 @@ export function loadGame() {
 	player.onAnimateFinished(() => {
 		player.play("idle");
 		spawnEnemy();
-	});
-
-	k.onUpdate(() => {
-		// player.move(100,0);
 	});
 }

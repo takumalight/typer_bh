@@ -58,8 +58,10 @@ export function makeEnemy(): Enemy {
 	);
 
 	return k.add([
+		"enemy",
 		k.anchor("bot"),
 		k.area(),
+		k.offscreen({ destroy: true }),
 		k.pos(k.width() + 50, randSpawnY),
 		k.scale(gameConstants.SPRITE_SCALE),
 		k.sprite(randEnemy.spriteName, { anim: "move" }),

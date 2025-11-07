@@ -4,6 +4,9 @@ import { loadGame } from "./scenes/game";
 import { loadGameOver } from "./scenes/game-over";
 import { loadMainMenu } from "./scenes/main-menu";
 
+// Set Layers
+k.setLayers(["bg", "obj", "ui"], "obj");
+
 // Load Sprites
 k.loadSprite("background", "graphics/Mysterious_Exit.PNG");
 k.loadSprite("avokahtamer", "graphics/characters/bh_spritesheet_at.png", {
