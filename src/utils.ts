@@ -20,3 +20,18 @@ export function addTextShadow(textObj: GameObj) {
 export function updateScore(score: number): string {
 	return `Score: ${score}`;
 }
+
+export function displayCoordinateGrid() {
+	for (let x = 0; x < k.width(); x += 100) {
+		for (let y = 0; y < k.height(); y += 100) {
+			k.add([
+				k.text(`(x:${x},y:${y})`, {
+					align: "center",
+					size: 12,
+				}),
+				k.pos(x, y),
+				k.anchor("center"),
+			]);
+		}
+	}
+}

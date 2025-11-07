@@ -2,13 +2,14 @@ import { gameConstants } from "../constants";
 import { makeEnemy, type Enemy } from "../entities/enemy";
 import { makePlayer } from "../entities/player";
 import k from "../kaplayCtx";
-import { addTextShadow, updateScore } from "../utils";
+import { addTextShadow, displayCoordinateGrid, updateScore } from "../utils";
 import { wordBank } from "../word-bank";
 import type { GameObj, TextComp } from "kaplay";
 
 export function loadGame() {
 	k.setLayers(["bg", "obj", "ui"], "obj");
 	k.add([k.sprite("background"), k.pos(0)]);
+	displayCoordinateGrid();
 
 	// Scoreboard
 	let score = 0;
@@ -86,24 +87,18 @@ export function loadGame() {
 	// Enemies spawn at increasing rate
 	let spawnSpeed = gameConstants.SPAWN_INITIAL_RATE;
 	const spawnEnemy = () => {
-		const enemyList: string[] = ["axlerex", "foohrok"];
-
-		const randEnemy = enemyList[k.randi(enemyList.length)];
 		const randWord = wordBank[k.randi(wordBank.length)];
 
-		const enemy = makeEnemy(
-			k.vec2(k.width() + 50, k.randi(600, k.height())),
-			randEnemy
-		);
+		const enemy = makeEnemy();
 		addWordShadow(enemy, randWord);
 		addWord(enemy, randWord);
 		enemy.onUpdate(() => {
-			enemy.move(-50, 0);
+			enemy.move(-enemy.speed, 0);
 		});
 
 		if (spawnSpeed > gameConstants.SPAWN_MIN_THRESHOLD) {
 			spawnSpeed -= gameConstants.SPAWN_REDUCE_RATE;
-			k.debug.log(spawnSpeed);
+			// k.debug.log(spawnSpeed);
 		}
 		k.wait(spawnSpeed / gameConstants.SPAWN_DIVISOR, spawnEnemy);
 	};
