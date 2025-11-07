@@ -9,7 +9,9 @@ import type { GameObj, TextComp } from "kaplay";
 export function loadGame() {
 	k.setLayers(["bg", "obj", "ui"], "obj");
 	k.add([k.sprite("background"), k.pos(0)]);
-	displayCoordinateGrid();
+
+	// For placing objects
+	displayCoordinateGrid(false);
 
 	// Scoreboard
 	let score = 0;
@@ -66,25 +68,34 @@ export function loadGame() {
 		]);
 	};
 
+	// The actual typing part of the game
 	k.onKeyPress((key) => {
 		const wordObjs = k.get("challengeWord", { recursive: true });
+		let completedWord = false;
 		for (const wordObj of wordObjs) {
 			if (wordObj.text[wordObj.currentIndex] == key) {
 				wordObj.currentIndex++;
 				if (wordObj.currentIndex == wordObj.text.length) {
+					completedWord = true;
 					score++;
 					const newScore = updateScore(score);
 					scoreboard.text = newScore;
 					scoreboardShadow.text = newScore;
 					wordObj.parent?.destroy();
+					break;
 				}
 			} else {
 				wordObj.currentIndex = 0;
 			}
 		}
+		if (completedWord) {
+			for (const wordObj of wordObjs) {
+				wordObj.currentIndex = 0;
+			}
+		}
 	});
 
-	// Enemies spawn at increasing rate
+	// Spawning enemies
 	let spawnSpeed = gameConstants.SPAWN_INITIAL_RATE;
 	const spawnEnemy = () => {
 		const randWord = wordBank[k.randi(wordBank.length)];
@@ -113,7 +124,6 @@ export function loadGame() {
 		player.play("idle");
 		spawnEnemy();
 	});
-	// End "cutscene"
 
 	k.onUpdate(() => {
 		// player.move(100,0);

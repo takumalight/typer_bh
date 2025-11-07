@@ -21,10 +21,12 @@ export function updateScore(score: number): string {
 	return `Score: ${score}`;
 }
 
-export function displayCoordinateGrid() {
+export function displayCoordinateGrid(shouldDisplay: boolean) {
+	if (!shouldDisplay) return;
 	for (let x = 0; x < k.width(); x += 100) {
 		for (let y = 0; y < k.height(); y += 100) {
 			k.add([
+				"coordinateGridMarker",
 				k.text(`(x:${x},y:${y})`, {
 					align: "center",
 					size: 12,
