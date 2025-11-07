@@ -2,11 +2,29 @@ import { gameConstants } from "../constants";
 import { makeEnemy, type Enemy } from "../entities/enemy";
 import { makePlayer } from "../entities/player";
 import k from "../kaplayCtx";
+import { addTextShadow, updateScore } from "../utils";
 import { wordBank } from "../word-bank";
 import type { GameObj, TextComp } from "kaplay";
 
 export function loadGame() {
+	k.setLayers(["bg", "obj", "ui"], "obj");
 	k.add([k.sprite("background"), k.pos(0)]);
+
+	// Scoreboard
+	let score = 0;
+	const scoreboard = k.add([
+		"scoreboard",
+		k.layer("ui"),
+		k.text("Score: 0", {
+			font: "voya-nui",
+			size: gameConstants.SCOREBOARD_TEXT_SIZE,
+			align: "left",
+		}),
+		k.anchor("center"),
+		k.pos(175, 50),
+		k.z(gameConstants.TEXT_Z),
+	]);
+	const scoreboardShadow = addTextShadow(scoreboard);
 
 	// Game Logic
 	const addWord = (hostEnemy: Enemy) => {
@@ -42,6 +60,10 @@ export function loadGame() {
 			if (wordObj.text[wordObj.currentIndex] == key) {
 				wordObj.currentIndex++;
 				if (wordObj.currentIndex == wordObj.text.length) {
+					score++;
+					const newScore = updateScore(score);
+					scoreboard.text = newScore;
+					scoreboardShadow.text = newScore;
 					wordObj.parent?.destroy();
 				}
 			} else {
@@ -50,6 +72,8 @@ export function loadGame() {
 		}
 	});
 
+	// Enemies spawn at increasing rate
+	let spawnSpeed = gameConstants.INITIAL_SPAWN_RATE;
 	const spawnEnemy = () => {
 		const enemyList: string[] = ["axlerex", "foohrok"];
 
@@ -61,11 +85,14 @@ export function loadGame() {
 		);
 		addWord(enemy);
 		enemy.onUpdate(() => {
-			enemy.move(-25, 0);
+			enemy.move(-50, 0);
 		});
 
-		const waitTime = 5;
-		k.wait(waitTime, spawnEnemy);
+		if (spawnSpeed > 1) {
+			spawnSpeed -= 1;
+			// k.debug.log(spawnSpeed);
+		}
+		k.wait(spawnSpeed / 10, spawnEnemy);
 	};
 
 	// Level start "cutscene"
