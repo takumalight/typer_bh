@@ -75,6 +75,10 @@ export function loadGame() {
 		for (const wordObj of wordObjs) {
 			if (wordObj.text[wordObj.currentIndex] == key) {
 				wordObj.currentIndex++;
+				// Don't require spaces to be typed
+				if (wordObj.text[wordObj.currentIndex] === " ")
+					wordObj.currentIndex++;
+				// Run completed word logic
 				if (wordObj.currentIndex == wordObj.text.length) {
 					completedWord = true;
 					score += wordObj.text.length * (wordObj.parent?.speed / 25);
