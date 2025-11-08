@@ -36,6 +36,7 @@ export function loadGame() {
 		k.rect(10, k.height()),
 	]);
 	failZone.onCollide("enemy", () => {
+		k.setData("final-score", score);
 		k.go("game-over");
 	});
 
@@ -121,10 +122,8 @@ export function loadGame() {
 			enemy.move(-enemy.speed, 0);
 		});
 
-		if (spawnSpeed > gameConstants.SPAWN_MIN_THRESHOLD) {
-			spawnSpeed -= gameConstants.SPAWN_REDUCE_RATE;
-			// k.debug.log(spawnSpeed);
-		}
+		// k.debug.log(`Spawning enemy...`);
+
 		k.wait(spawnSpeed / gameConstants.SPAWN_DIVISOR, spawnEnemy);
 	};
 
@@ -137,5 +136,11 @@ export function loadGame() {
 	player.onAnimateFinished(() => {
 		player.play("idle");
 		spawnEnemy();
+	});
+	k.loop(10, () => {
+		if (spawnSpeed > gameConstants.SPAWN_MIN_THRESHOLD) {
+			spawnSpeed -= gameConstants.SPAWN_REDUCE_RATE;
+			// k.debug.log(`New Spawn Speed: ${spawnSpeed}`);
+		}
 	});
 }
