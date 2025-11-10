@@ -1,6 +1,7 @@
 import { gameConstants } from "../constants";
 import { makeEnemy, type Enemy } from "../entities/enemy";
 import { makePlayer } from "../entities/player";
+import { makePlayerProjectile } from "../entities/projectile";
 import k from "../kaplayCtx";
 import { addTextShadow, displayCoordinateGrid, updateScore } from "../utils";
 import { wordBank } from "../word-bank";
@@ -40,7 +41,7 @@ export function loadGame() {
 		k.go("game-over");
 	});
 
-	// Game Logic
+	// Randomized challenge words
 	const addWord = (hostEnemy: Enemy, challengeWord: string) => {
 		return hostEnemy.add([
 			"challengeWord",
@@ -92,11 +93,57 @@ export function loadGame() {
 				// Run completed word logic
 				if (wordObj.currentIndex == wordObj.text.length) {
 					completedWord = true;
+					player.play("attack", {
+						onEnd() {
+							player.play("idle");
+						},
+					});
+					// Create projectile
+					const projectile = makePlayerProjectile(player.pos);
+					// Setup listener
+					const couplingTag = String(k.time());
+					const targetTag = couplingTag + "target";
+					wordObj.parent?.tag(targetTag);
+					/* const coupledCollisionListener = */ projectile.onCollide(
+						targetTag,
+						(target) => {
+							// TODO: DESTROY WORD OBJS
+							k.destroy(projectile);
+							k.play("hit");
+							target.speed = 0;
+							target.play("die", {
+								onEnd: () => {
+									// k.tween(100, 0, 3, (o) => {
+									// 	target.opacity = o;
+									// });
+									// k.wait(3, () => target.destroy());
+									target.destroy();
+								},
+							});
+						}
+					);
+					// TODO: REMOVE EVENT HANDLERS WHEN NOT NEEDED
+					k.tween(
+						projectile.speed,
+						projectile.targetSpeed,
+						0.1,
+						(s) => (projectile.speed = s),
+						k.easings.easeInCubic
+					);
+					projectile.onUpdate(() => {
+						projectile.moveTo(
+							wordObj.parent?.pos.add(
+								0,
+								-wordObj.parent.height / 2
+							),
+							projectile.speed
+						);
+					});
+
 					score += wordObj.text.length * (wordObj.parent?.speed / 25);
 					const newScore = updateScore(score);
 					scoreboard.text = newScore;
 					scoreboardShadow.text = newScore;
-					wordObj.parent?.destroy();
 					break;
 				}
 			} else {
@@ -122,8 +169,6 @@ export function loadGame() {
 			enemy.move(-enemy.speed, 0);
 		});
 
-		// k.debug.log(`Spawning enemy...`);
-
 		k.wait(spawnSpeed / gameConstants.SPAWN_DIVISOR, spawnEnemy);
 	};
 
@@ -140,7 +185,6 @@ export function loadGame() {
 	k.loop(10, () => {
 		if (spawnSpeed > gameConstants.SPAWN_MIN_THRESHOLD) {
 			spawnSpeed -= gameConstants.SPAWN_REDUCE_RATE;
-			// k.debug.log(`New Spawn Speed: ${spawnSpeed}`);
 		}
 	});
 }
