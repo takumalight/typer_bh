@@ -9,7 +9,7 @@ export function loadGameOver() {
 	}
 	k.add([k.sprite("background"), k.pos(0), k.opacity(0.5)]);
 	k.add([
-		k.text(`u suk\nFinal Score: ${finalScore}\nHigh Score:${highScore}`, {
+		k.text(`u suk\nFinal Score: ${finalScore}\nHigh Score: ${highScore}`, {
 			size: 75,
 			align: "center",
 			font: "voya-nui",

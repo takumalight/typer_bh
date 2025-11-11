@@ -1,6 +1,19 @@
-import type { Vec2 } from "kaplay";
+import type {
+	AnchorComp,
+	GameObj,
+	PosComp,
+	ZComp,
+	SpriteComp,
+	ScaleComp,
+	AnimateComp,
+	Vec2,
+} from "kaplay";
 import k from "../kaplayCtx";
 import { gameConstants } from "../constants";
+
+export type Player = GameObj<
+	AnchorComp | PosComp | ZComp | SpriteComp | ScaleComp | AnimateComp
+>;
 
 export function makePlayer(pos: Vec2, selectedCharacter: string) {
 	return k.add([

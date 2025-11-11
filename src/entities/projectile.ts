@@ -1,7 +1,27 @@
-import type { Vec2 } from "kaplay";
+import type {
+	Vec2,
+	GameObj,
+	PosComp,
+	ZComp,
+	ColorComp,
+	AreaComp,
+	CircleComp,
+} from "kaplay";
 import k from "../kaplayCtx";
 
-export function makePlayerProjectile(initialPos: Vec2) {
+export type PlayerProjectile = GameObj<
+	| PosComp
+	| ZComp
+	| ColorComp
+	| AreaComp
+	| CircleComp
+	| {
+			speed: number;
+			targetSpeed: number;
+	  }
+>;
+
+export function makePlayerProjectile(initialPos: Vec2): PlayerProjectile {
 	return k.add([
 		// k.animate(),
 		k.area(),

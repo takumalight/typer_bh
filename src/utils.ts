@@ -1,8 +1,23 @@
-import type { GameObj } from "kaplay";
+import type {
+	GameObj,
+	TextComp,
+	PosComp,
+	AnchorComp,
+	ZComp,
+	ColorComp,
+	LayerComp,
+} from "kaplay";
 import k from "./kaplayCtx";
 import { gameConstants } from "./constants";
+import { makePlayerProjectile } from "./entities/projectile";
+import type { Player } from "./entities/player";
+import type { Enemy } from "./entities/enemy";
 
-export function addTextShadow(textObj: GameObj) {
+export type TextShadow = GameObj<
+	TextComp | PosComp | AnchorComp | ZComp | ColorComp | LayerComp
+>;
+
+export function addTextShadow(textObj: GameObj): TextShadow {
 	return k.add([
 		k.text(textObj.text, {
 			font: textObj.font,
@@ -36,4 +51,42 @@ export function displayCoordinateGrid(shouldDisplay: boolean) {
 			]);
 		}
 	}
+}
+
+export function attackTarget(player: Player, enemy: Enemy) {
+	// Create projectile
+	const projectile = makePlayerProjectile(player.pos.add(35, -40));
+	// Setup listener
+	const targetTag = String(k.time()) + "target";
+	enemy.tag(targetTag);
+	projectile.onCollide(targetTag, (target) => {
+		k.destroy(projectile);
+		k.play("hit");
+		target.speed = 0;
+		target.play("die", {
+			onEnd: () => {
+				k.tween(1, 0, gameConstants.ENEMY_FADE_DURATION, (o) => {
+					target.opacity = o;
+				});
+				k.wait(gameConstants.ENEMY_FADE_DURATION, () =>
+					target.destroy()
+				);
+				// target.destroy();
+			},
+		});
+	});
+	// TODO: REMOVE EVENT HANDLERS WHEN NOT NEEDED
+	k.tween(
+		projectile.speed,
+		projectile.targetSpeed,
+		0.1,
+		(s) => (projectile.speed = s),
+		k.easings.easeInCubic
+	);
+	projectile.onUpdate(() => {
+		projectile.moveTo(
+			enemy.pos.add(0, -enemy.height / 2),
+			projectile.speed
+		);
+	});
 }

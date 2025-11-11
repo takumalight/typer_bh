@@ -1,11 +1,20 @@
 import { gameConstants } from "../constants";
 import { makeEnemy, type Enemy } from "../entities/enemy";
 import { makePlayer } from "../entities/player";
-import { makePlayerProjectile } from "../entities/projectile";
+import {
+	addWord,
+	addWordShadow,
+	type WordObj,
+	type WordShadowObj,
+} from "../entities/wordObjs";
 import k from "../kaplayCtx";
-import { addTextShadow, displayCoordinateGrid, updateScore } from "../utils";
+import {
+	addTextShadow,
+	attackTarget,
+	displayCoordinateGrid,
+	updateScore,
+} from "../utils";
 import { wordBank } from "../word-bank";
-import type { GameObj, TextComp } from "kaplay";
 
 export function loadGame() {
 	k.add([k.sprite("background"), k.pos(0)]);
@@ -41,118 +50,56 @@ export function loadGame() {
 		k.go("game-over");
 	});
 
-	// Randomized challenge words
-	const addWord = (hostEnemy: Enemy, challengeWord: string) => {
-		return hostEnemy.add([
-			"challengeWord",
-			k.text(challengeWord, {
-				align: "center",
-				font: "voya-nui",
-				size: gameConstants.CHALLENGE_WORD_SIZE,
-			}),
-			k.anchor("bot"),
-			k.pos(0, -hostEnemy.height + 10),
-			{
-				currentIndex: 0,
-				add(this: GameObj<TextComp | { currentIndex: number }>) {
-					this.textTransform = (idx) => ({
-						color: k.rgb(
-							255,
-							idx >= this.currentIndex ? 255 : 0,
-							idx >= this.currentIndex ? 255 : 0
-						),
-					});
-				},
-			},
-		]);
-	};
-	const addWordShadow = (hostEnemy: Enemy, challengeWord: string) => {
-		return hostEnemy.add([
-			"challengeWordShadow",
-			k.text(challengeWord, {
-				align: "center",
-				font: "voya-nui",
-				size: gameConstants.CHALLENGE_WORD_SIZE,
-			}),
-			k.anchor("bot"),
-			k.color("#000000"),
-			k.pos(1, -hostEnemy.height + 11),
-		]);
-	};
-
 	// The actual typing part of the game
 	k.onKeyPress((key) => {
-		const wordObjs = k.get("challengeWord", { recursive: true });
 		let completedWord = false;
-		for (const wordObj of wordObjs) {
+
+		const enemies: Enemy[] = k.get("enemy", { recursive: true }) as Enemy[];
+		for (const enemy of enemies) {
+			const enemyChildren = enemy.children;
+			const wordObj: WordObj = enemyChildren[1] as WordObj;
+			const shadowObj: WordShadowObj = enemyChildren[0] as WordShadowObj;
+
+			// Check for correct letter typed
 			if (wordObj.text[wordObj.currentIndex] == key) {
 				wordObj.currentIndex++;
 				// Don't require spaces to be typed
 				if (wordObj.text[wordObj.currentIndex] === " ")
 					wordObj.currentIndex++;
+
 				// Run completed word logic
 				if (wordObj.currentIndex == wordObj.text.length) {
 					completedWord = true;
-					player.play("attack", {
-						onEnd() {
-							player.play("idle");
-						},
-					});
-					// Create projectile
-					const projectile = makePlayerProjectile(player.pos);
-					// Setup listener
-					const couplingTag = String(k.time());
-					const targetTag = couplingTag + "target";
-					wordObj.parent?.tag(targetTag);
-					/* const coupledCollisionListener = */ projectile.onCollide(
-						targetTag,
-						(target) => {
-							// TODO: DESTROY WORD OBJS
-							k.destroy(projectile);
-							k.play("hit");
-							target.speed = 0;
-							target.play("die", {
-								onEnd: () => {
-									// k.tween(100, 0, 3, (o) => {
-									// 	target.opacity = o;
-									// });
-									// k.wait(3, () => target.destroy());
-									target.destroy();
-								},
-							});
-						}
-					);
-					// TODO: REMOVE EVENT HANDLERS WHEN NOT NEEDED
-					k.tween(
-						projectile.speed,
-						projectile.targetSpeed,
-						0.1,
-						(s) => (projectile.speed = s),
-						k.easings.easeInCubic
-					);
-					projectile.onUpdate(() => {
-						projectile.moveTo(
-							wordObj.parent?.pos.add(
-								0,
-								-wordObj.parent.height / 2
-							),
-							projectile.speed
-						);
-					});
 
+					// Update scoreboard
 					score += wordObj.text.length * (wordObj.parent?.speed / 25);
 					const newScore = updateScore(score);
 					scoreboard.text = newScore;
 					scoreboardShadow.text = newScore;
+
+					// After calculating score, remove text from word objects to avoid typing conflicts
+					wordObj.text = "";
+					shadowObj.text = "";
+
+					// Attack the enemy
+					player.play("attack", {
+						onEnd() {
+							attackTarget(player, enemy);
+						},
+					});
 					break;
 				}
 			} else {
+				// Reset coloring
 				wordObj.currentIndex = 0;
 			}
 		}
+
+		// Reset other words after a successfully typed challenge word
 		if (completedWord) {
-			for (const wordObj of wordObjs) {
-				wordObj.currentIndex = 0;
+			for (const enemy of enemies) {
+				// if (enemy.children.length > 0)
+				enemy.children[1].currentIndex = 0;
 			}
 		}
 	});
@@ -181,6 +128,20 @@ export function loadGame() {
 	player.onAnimateFinished(() => {
 		player.play("idle");
 		spawnEnemy();
+	});
+	player.onAnimEnd((anim) => {
+		switch (anim) {
+			case "attack":
+				player.play("backswing");
+				break;
+
+			case "backswing":
+				player.play("idle");
+				break;
+
+			default:
+				break;
+		}
 	});
 	k.loop(10, () => {
 		if (spawnSpeed > gameConstants.SPAWN_MIN_THRESHOLD) {

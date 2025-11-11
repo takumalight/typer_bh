@@ -16,7 +16,8 @@ k.loadSprite("avokahtamer", "graphics/characters/bh_spritesheet_at.png", {
 		idle: 0,
 		walk: { from: 8, to: 13, loop: true, speed: 8 },
 		run: { from: 16, to: 23, loop: true, speed: 15 },
-		attack: { from: 24, to: 29, loop: false, speed: 20 },
+		attack: { from: 24, to: 27, loop: false, speed: 20 },
+		backswing: { from: 28, to: 29, loop: false, speed: 20 },
 	},
 });
 k.loadSprite("axlerex", "graphics/enemies/new_axlerex.png", {

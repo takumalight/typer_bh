@@ -2,6 +2,7 @@ import type {
 	AnchorComp,
 	AreaComp,
 	GameObj,
+	OpacityComp,
 	PosComp,
 	ScaleComp,
 	SpriteComp,
@@ -17,8 +18,10 @@ export type Enemy = GameObj<
 	| AreaComp
 	| ScaleComp
 	| ZComp
+	| OpacityComp
 	| { speed: number }
 >;
+
 type EnemyData = {
 	speed: number;
 	spawnUpperLimit: number;
@@ -62,6 +65,7 @@ export function makeEnemy(): Enemy {
 		k.anchor("bot"),
 		k.area(),
 		k.offscreen({ destroy: true }),
+		k.opacity(1),
 		k.pos(k.width() + 50, randSpawnY),
 		k.scale(gameConstants.SPRITE_SCALE),
 		k.sprite(randEnemy.spriteName, { anim: "move" }),
