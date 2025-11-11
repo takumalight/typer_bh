@@ -25,7 +25,7 @@ export function addWord(hostEnemy: Enemy, challengeWord: string): WordObj {
 			size: gameConstants.CHALLENGE_WORD_SIZE,
 		}),
 		k.anchor("bot"),
-		k.pos(0, -hostEnemy.height + 10),
+		k.pos(0, -20),
 		{
 			currentIndex: 0,
 			add(this: GameObj<TextComp | { currentIndex: number }>): void {
@@ -54,6 +54,6 @@ export function addWordShadow(
 		}),
 		k.anchor("bot"),
 		k.color("#000000"),
-		k.pos(1, -hostEnemy.height + 11),
+		k.pos(1, -19),
 	]);
 }

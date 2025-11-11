@@ -61,6 +61,7 @@ export function attackTarget(player: Player, enemy: Enemy) {
 	enemy.tag(targetTag);
 	projectile.onCollide(targetTag, (target) => {
 		k.destroy(projectile);
+		k.shake(gameConstants.SCREEN_SHAKE_INTENSITY);
 		k.play("hit");
 		target.speed = 0;
 		target.deathThroes();
@@ -74,9 +75,6 @@ export function attackTarget(player: Player, enemy: Enemy) {
 		k.easings.easeInCubic
 	);
 	projectile.onUpdate(() => {
-		projectile.moveTo(
-			enemy.pos.add(0, -enemy.height / 2),
-			projectile.speed
-		);
+		projectile.moveTo(enemy.pos, projectile.speed);
 	});
 }

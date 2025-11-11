@@ -26,7 +26,7 @@ k.loadSprite("axlerex", "graphics/enemies/new_axlerex.png", {
 	anims: {
 		move: { from: 0, to: 5, loop: true, speed: 16 },
 		attack: { from: 7, to: 13, loop: false, speed: 8 },
-		die: { from: 16, to: 23, loop: false, speed: 8 },
+		die: { from: 17, to: 23, loop: false, speed: 8 },
 	},
 });
 k.loadSprite("foohrok", "graphics/enemies/foohrok_roll.png", {

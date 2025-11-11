@@ -46,14 +46,14 @@ export function makeEnemy(): Enemy {
 		axlerex: {
 			speed: 100,
 			spawnUpperLimit: 510,
-			spawnLowerLimit: k.height(),
+			spawnLowerLimit: k.height() - 75,
 			spriteName: "axlerex",
 			deathThroes: defaultDeathThroes,
 		},
 		foohrok: {
 			speed: 175,
 			spawnUpperLimit: 510,
-			spawnLowerLimit: k.height(),
+			spawnLowerLimit: k.height() - 75,
 			spriteName: "foohrok",
 			deathThroes: defaultDeathThroes,
 		},
@@ -63,21 +63,11 @@ export function makeEnemy(): Enemy {
 			spawnLowerLimit: 400,
 			spriteName: "rama",
 			deathThroes(this: GameObj) {
-				this.play("die", {
-					onEnd: () => {
-						k.tween(
-							1,
-							0,
-							gameConstants.ENEMY_FADE_DURATION,
-							(o) => {
-								this.opacity = o;
-							}
-						);
-						k.wait(gameConstants.ENEMY_FADE_DURATION, () =>
-							this.destroy()
-						);
-					},
+				k.addKaboom(this.pos.add(0, -this.height / 2), {
+					speed: 1.5,
+					scale: 1,
 				});
+				this.destroy();
 			},
 		},
 	};
@@ -93,8 +83,8 @@ export function makeEnemy(): Enemy {
 
 	return k.add([
 		"enemy",
-		k.anchor("bot"),
-		k.area(),
+		k.anchor("center"),
+		k.area({ shape: new k.Rect(k.vec2(0), 15, 15) }),
 		k.offscreen({ destroy: true }),
 		k.opacity(1),
 		k.pos(k.width() + 50, randSpawnY),
