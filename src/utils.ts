@@ -63,17 +63,7 @@ export function attackTarget(player: Player, enemy: Enemy) {
 		k.destroy(projectile);
 		k.play("hit");
 		target.speed = 0;
-		target.play("die", {
-			onEnd: () => {
-				k.tween(1, 0, gameConstants.ENEMY_FADE_DURATION, (o) => {
-					target.opacity = o;
-				});
-				k.wait(gameConstants.ENEMY_FADE_DURATION, () =>
-					target.destroy()
-				);
-				// target.destroy();
-			},
-		});
+		target.deathThroes();
 	});
 	// TODO: REMOVE EVENT HANDLERS WHEN NOT NEEDED
 	k.tween(

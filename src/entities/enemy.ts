@@ -19,7 +19,7 @@ export type Enemy = GameObj<
 	| ScaleComp
 	| ZComp
 	| OpacityComp
-	| { speed: number }
+	| { speed: number; deathThroes(): void }
 >;
 
 type EnemyData = {
@@ -27,7 +27,19 @@ type EnemyData = {
 	spawnUpperLimit: number;
 	spawnLowerLimit: number;
 	spriteName: string;
+	deathThroes(): void;
 };
+
+function defaultDeathThroes(this: GameObj) {
+	this.play("die", {
+		onEnd: () => {
+			k.tween(1, 0, gameConstants.ENEMY_FADE_DURATION, (o) => {
+				this.opacity = o;
+			});
+			k.wait(gameConstants.ENEMY_FADE_DURATION, () => this.destroy());
+		},
+	});
+}
 
 export function makeEnemy(): Enemy {
 	const enemyData: Record<string, EnemyData> = {
@@ -36,18 +48,37 @@ export function makeEnemy(): Enemy {
 			spawnUpperLimit: 510,
 			spawnLowerLimit: k.height(),
 			spriteName: "axlerex",
+			deathThroes: defaultDeathThroes,
 		},
 		foohrok: {
 			speed: 175,
 			spawnUpperLimit: 510,
 			spawnLowerLimit: k.height(),
 			spriteName: "foohrok",
+			deathThroes: defaultDeathThroes,
 		},
 		rama: {
 			speed: 300,
 			spawnUpperLimit: 175,
 			spawnLowerLimit: 400,
 			spriteName: "rama",
+			deathThroes(this: GameObj) {
+				this.play("die", {
+					onEnd: () => {
+						k.tween(
+							1,
+							0,
+							gameConstants.ENEMY_FADE_DURATION,
+							(o) => {
+								this.opacity = o;
+							}
+						);
+						k.wait(gameConstants.ENEMY_FADE_DURATION, () =>
+							this.destroy()
+						);
+					},
+				});
+			},
 		},
 	};
 
@@ -72,6 +103,7 @@ export function makeEnemy(): Enemy {
 		k.z(gameConstants.CHAR_Z + randSpawnY),
 		{
 			speed: randEnemy.speed,
+			deathThroes: randEnemy.deathThroes,
 		},
 	]);
 }

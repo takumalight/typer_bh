@@ -98,7 +98,6 @@ export function loadGame() {
 		// Reset other words after a successfully typed challenge word
 		if (completedWord) {
 			for (const enemy of enemies) {
-				// if (enemy.children.length > 0)
 				enemy.children[1].currentIndex = 0;
 			}
 		}
