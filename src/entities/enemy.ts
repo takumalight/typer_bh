@@ -31,13 +31,17 @@ type EnemyData = {
 };
 
 function defaultDeathThroes(this: GameObj) {
-	this.play("die", {
-		onEnd: () => {
-			k.tween(1, 0, gameConstants.ENEMY_FADE_DURATION, (o) => {
-				this.opacity = o;
-			});
-			k.wait(gameConstants.ENEMY_FADE_DURATION, () => this.destroy());
-		},
+	this.color = k.RED;
+	k.wait(0.1, () => {
+		this.color = k.WHITE;
+		this.play("die", {
+			onEnd: () => {
+				k.tween(1, 0, gameConstants.ENEMY_FADE_DURATION, (o) => {
+					this.opacity = o;
+				});
+				k.wait(gameConstants.ENEMY_FADE_DURATION, () => this.destroy());
+			},
+		});
 	});
 }
 
@@ -63,7 +67,7 @@ export function makeEnemy(): Enemy {
 			spawnLowerLimit: 400,
 			spriteName: "rama",
 			deathThroes(this: GameObj) {
-				k.addKaboom(this.pos.add(0, -this.height / 2), {
+				k.addKaboom(this.pos, {
 					speed: 1.5,
 					scale: 1,
 				});
@@ -85,6 +89,7 @@ export function makeEnemy(): Enemy {
 		"enemy",
 		k.anchor("center"),
 		k.area({ shape: new k.Rect(k.vec2(0), 15, 15) }),
+		k.color(255, 255, 255),
 		k.offscreen({ destroy: true }),
 		k.opacity(1),
 		k.pos(k.width() + 50, randSpawnY),
