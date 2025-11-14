@@ -1,4 +1,5 @@
 import k from "../kaplayCtx";
+import { gameStateManager } from "../main";
 
 export function loadGameOver() {
 	let highScore = k.getData("high-score") ?? 0;
@@ -12,7 +13,7 @@ export function loadGameOver() {
 		k.text(`u suk\nFinal Score: ${finalScore}\nHigh Score: ${highScore}`, {
 			size: 75,
 			align: "center",
-			font: "voya-nui",
+			font: gameStateManager.font,
 		}),
 		k.anchor("center"),
 		k.pos(k.center()),

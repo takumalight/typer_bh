@@ -9,7 +9,7 @@ k.setLayers(["bg", "obj", "ui"], "obj");
 
 // Load Sprites
 k.loadSprite("background", "graphics/Mysterious_Exit.PNG");
-k.loadSprite("avokahtamer", "graphics/characters/bh_spritesheet_at.png", {
+k.loadSprite("avohkahtamer", "graphics/characters/bh_spritesheet_at.png", {
 	sliceX: 8,
 	sliceY: 4,
 	anims: {
@@ -62,6 +62,16 @@ k.scene("main-menu", loadMainMenu);
 k.scene("character-select", loadCharacterSelect);
 k.scene("game", loadGame);
 k.scene("game-over", loadGameOver);
+
+// State
+const loadFontPref: string = k.getData("pref-font") ?? "voya-nui";
+const loadShakePref: boolean = k.getData("pref-shake") ?? true;
+export const gameStateManager = {
+	hardMode: false,
+	menuOpen: false,
+	font: loadFontPref,
+	shake: loadShakePref,
+};
 
 // Run
 k.go("main-menu");

@@ -2,6 +2,7 @@ import type { Enemy } from "./enemy";
 import k from "../kaplayCtx";
 import type { GameObj, TextComp, PosComp, AnchorComp, ColorComp } from "kaplay";
 import { gameConstants } from "../constants";
+import { gameStateManager } from "../main";
 
 export type WordObj = GameObj<
 	| PosComp
@@ -21,7 +22,7 @@ export function addWord(hostEnemy: Enemy, challengeWord: string): WordObj {
 		"challengeWord",
 		k.text(challengeWord, {
 			align: "center",
-			font: "voya-nui",
+			font: gameStateManager.font,
 			size: gameConstants.CHALLENGE_WORD_SIZE,
 		}),
 		k.anchor("bot"),
@@ -49,7 +50,7 @@ export function addWordShadow(
 		"challengeWordShadow",
 		k.text(challengeWord, {
 			align: "center",
-			font: "voya-nui",
+			font: gameStateManager.font,
 			size: gameConstants.CHALLENGE_WORD_SIZE,
 		}),
 		k.anchor("bot"),

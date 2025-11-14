@@ -8,6 +8,7 @@ import {
 	type WordShadowObj,
 } from "../entities/wordObjs";
 import k from "../kaplayCtx";
+import { gameStateManager } from "../main";
 import {
 	addTextShadow,
 	attackTarget,
@@ -28,7 +29,7 @@ export function loadGame() {
 		"scoreboard",
 		k.layer("ui"),
 		k.text("Score: 0", {
-			font: "voya-nui",
+			font: gameStateManager.font,
 			size: gameConstants.SCOREBOARD_TEXT_SIZE,
 			align: "left",
 		}),
@@ -119,7 +120,7 @@ export function loadGame() {
 	};
 
 	// Level start "cutscene"
-	const player = makePlayer(k.vec2(-50, 625), "avokahtamer");
+	const player = makePlayer(k.vec2(-50, 625), "avohkahtamer");
 	player.animate("pos", [player.pos, k.vec2(100, player.pos.y)], {
 		duration: 3,
 		loops: 1,

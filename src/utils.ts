@@ -12,6 +12,7 @@ import { gameConstants } from "./constants";
 import { makePlayerProjectile } from "./entities/projectile";
 import type { Player } from "./entities/player";
 import type { Enemy } from "./entities/enemy";
+import { gameStateManager } from "./main";
 
 export type TextShadow = GameObj<
 	TextComp | PosComp | AnchorComp | ZComp | ColorComp | LayerComp
@@ -61,7 +62,9 @@ export function attackTarget(player: Player, enemy: Enemy) {
 	enemy.tag(targetTag);
 	projectile.onCollide(targetTag, (target) => {
 		k.destroy(projectile);
-		k.shake(gameConstants.SCREEN_SHAKE_INTENSITY);
+		if (gameStateManager.shake) {
+			k.shake(gameConstants.SCREEN_SHAKE_INTENSITY);
+		}
 		k.play("hit");
 		target.speed = 0;
 		target.deathThroes();
