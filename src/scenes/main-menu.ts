@@ -4,9 +4,12 @@ import { gameStateManager } from "../main";
 import { addTextShadow } from "../utils";
 
 export function loadMainMenu() {
+	// Add background
 	k.add([k.sprite("background"), k.pos(0), k.opacity(0.5)]);
 
-	// Game Title
+	/**
+	 * GAME TITLE TEXT
+	 */
 	const titleText = k.add([
 		k.text("Boneheads Typing", {
 			size: 100,
@@ -21,7 +24,9 @@ export function loadMainMenu() {
 	]);
 	addTextShadow(titleText);
 
-	// Start Game Button
+	/**
+	 * START GAME BUTTON
+	 */
 	const startButton = k.add([
 		k.text("Start Game", {
 			size: 64,
@@ -54,12 +59,149 @@ export function loadMainMenu() {
 		startButton.color = k.rgb(gameConstants.BUTTON_DEFAULT_COLOR);
 		startButtonDecor.opacity = 0;
 	});
+
+	/**
+	 * DIFFICULTY SELECTOR MENU
+	 */
+
+	const difficultySelectorMenu = k.add([
+		k.rect(600, 400, {
+			radius: 10,
+		}),
+		k.anchor("top"),
+		k.animate(),
+		k.color("#000000"),
+		k.opacity(0.9),
+		k.outline(12, k.rgb("#333333"), 1, "bevel"),
+		k.pos(k.center().x, -410),
+		k.layer("ui"),
+		k.z(100),
+	]);
 	startButton.onClick(() => {
 		if (gameStateManager.menuOpen) return;
+		gameStateManager.menuOpen = true;
+		difficultySelectorMenu.animation.seek(0);
+		difficultySelectorMenu.animate(
+			"pos",
+			[
+				difficultySelectorMenu.pos,
+				k.vec2(difficultySelectorMenu.pos.x, k.center().y - 200),
+			],
+			{
+				duration: 0.75,
+				loops: 1,
+				easing: k.easings.easeOutBounce,
+			}
+		);
+	});
+
+	const closeDifficultyButton = difficultySelectorMenu.add([
+		k.rect(50, 50, {
+			radius: 10,
+		}),
+		k.anchor("topright"),
+		k.area(),
+		k.color("#aaaaaa"),
+		k.outline(5, k.rgb("#383838")),
+		k.pos(difficultySelectorMenu.width / 2 - 15, 15),
+	]);
+	closeDifficultyButton.add([
+		k.text("X", {
+			size: 56,
+			font: "voya-nui",
+			align: "center",
+		}),
+		k.anchor("center"),
+		k.pos(
+			-closeDifficultyButton.width / 2,
+			closeDifficultyButton.height / 2 - 2
+		),
+		k.color("#FF0000"),
+	]);
+	closeDifficultyButton.onHover(() => {
+		closeDifficultyButton.color = k.rgb("#666666");
+	});
+	closeDifficultyButton.onHoverEnd(() => {
+		closeDifficultyButton.color = k.rgb("#aaaaaa");
+	});
+	closeDifficultyButton.onClick(() => {
+		gameStateManager.menuOpen = false;
+		difficultySelectorMenu.animation.seek(0);
+		difficultySelectorMenu.animate(
+			"pos",
+			[
+				difficultySelectorMenu.pos,
+				k.vec2(difficultySelectorMenu.pos.x, -410),
+			],
+			{
+				duration: 0.75,
+				loops: 1,
+				easing: k.easings.easeOutBounce,
+			}
+		);
+	});
+	difficultySelectorMenu.add([
+		k.text("Select Diffculty", {
+			size: 48,
+			font: gameStateManager.font,
+			align: "center",
+		}),
+		k.anchor("center"),
+		k.area(),
+		k.color(gameConstants.BUTTON_DEFAULT_COLOR),
+		k.pos(0, (difficultySelectorMenu.height * 1) / 4),
+	]);
+	const normalDifficultyButton = difficultySelectorMenu.add([
+		k.text("Normal", {
+			size: 32,
+			font: gameStateManager.font,
+			align: "center",
+		}),
+		k.anchor("center"),
+		k.area(),
+		k.color(gameConstants.BUTTON_DEFAULT_COLOR),
+		k.pos(0, (difficultySelectorMenu.height * 1) / 2),
+	]);
+	normalDifficultyButton.onHover(() => {
+		normalDifficultyButton.color = k.rgb(gameConstants.BUTTON_HOVER_COLOR);
+	});
+	normalDifficultyButton.onHoverEnd(() => {
+		normalDifficultyButton.color = k.rgb(
+			gameConstants.BUTTON_DEFAULT_COLOR
+		);
+	});
+	normalDifficultyButton.onClick(() => {
+		gameStateManager.hardMode = false;
+		gameStateManager.menuOpen = false;
 		k.go("game");
 	});
 
-	// Character Select Button
+	const hardDifficultyButton = difficultySelectorMenu.add([
+		k.text("Hard", {
+			size: 32,
+			font: gameStateManager.font,
+			align: "center",
+		}),
+		k.anchor("center"),
+		k.area(),
+		k.color(gameConstants.BUTTON_DEFAULT_COLOR),
+		k.pos(0, (difficultySelectorMenu.height * 3) / 4),
+	]);
+	hardDifficultyButton.onHover(() => {
+		hardDifficultyButton.color = k.rgb(gameConstants.BUTTON_HOVER_COLOR);
+	});
+	hardDifficultyButton.onHoverEnd(() => {
+		hardDifficultyButton.color = k.rgb(gameConstants.BUTTON_DEFAULT_COLOR);
+	});
+	hardDifficultyButton.onClick(() => {
+		gameStateManager.hardMode = true;
+		gameStateManager.menuOpen = false;
+		k.go("game");
+	});
+
+	/**
+	 * CHARACTER SELECT BUTTON
+	 */
 	const charSelectButton = k.add([
 		k.text("Character Select", {
 			size: 64,
@@ -97,7 +239,9 @@ export function loadMainMenu() {
 		k.go("character-select");
 	});
 
-	// Settings Button
+	/**
+	 * SETTINGS MENU BUTTON
+	 */
 	const settingsButton = k.add([
 		k.text("Settings", {
 			size: 64,
@@ -152,7 +296,9 @@ export function loadMainMenu() {
 		); */
 	});
 
-	// Settings Menu
+	/**
+	 * SETTINGS MENU CONTENTS
+	 */
 	const settingsMenu = k.add([
 		k.rect(800, 400, {
 			radius: 10,
@@ -167,6 +313,7 @@ export function loadMainMenu() {
 		k.z(100),
 	]);
 
+	// Button to close menu
 	const closeSettingsButton = settingsMenu.add([
 		k.rect(50, 50, {
 			radius: 10,
@@ -212,6 +359,7 @@ export function loadMainMenu() {
 		);
 	});
 
+	// Option to change font
 	const fontSetting = settingsMenu.add([
 		k.text(`Font Setting: ${gameStateManager.font}`, {
 			size: 32,
@@ -249,6 +397,7 @@ export function loadMainMenu() {
 		fontSetting.text = `Font Setting: ${gameStateManager.font}`;
 	});
 
+	// Option to change screen shake
 	const shakeSetting = settingsMenu.add([
 		k.text(`Screen Shake: ${k.getData("pref-shake") ? "On" : "Off"}`, {
 			size: 32,
@@ -276,6 +425,7 @@ export function loadMainMenu() {
 		}`;
 	});
 
+	// Option to reset high score
 	const highScoreReset = settingsMenu.add([
 		k.text(`Reset High Score (${k.getData("high-score")})`, {
 			size: 32,

@@ -18,6 +18,7 @@ import {
 import { wordBank } from "../word-bank";
 
 export function loadGame() {
+	// Load background image
 	k.add([k.sprite("background"), k.pos(0)]);
 
 	// For placing objects
@@ -120,7 +121,7 @@ export function loadGame() {
 	};
 
 	// Level start "cutscene"
-	const player = makePlayer(k.vec2(-50, 625), "avohkahtamer");
+	const player = makePlayer(k.vec2(-50, 585), "avohkahtamer");
 	player.animate("pos", [player.pos, k.vec2(100, player.pos.y)], {
 		duration: 3,
 		loops: 1,

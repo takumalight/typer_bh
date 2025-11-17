@@ -17,7 +17,7 @@ export type Player = GameObj<
 
 export function makePlayer(pos: Vec2, selectedCharacter: string) {
 	return k.add([
-		k.anchor("bot"),
+		k.anchor("center"),
 		k.animate(),
 		k.pos(pos),
 		k.scale(gameConstants.SPRITE_SCALE),

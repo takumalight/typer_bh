@@ -56,6 +56,7 @@ k.loadSound(
 );
 // Load Fonts
 k.loadFont("voya-nui", "fonts/VoyaNui.ttf");
+k.loadFont("matoran-font", "fonts/bionrg_.TTF");
 
 // Scene List
 k.scene("main-menu", loadMainMenu);

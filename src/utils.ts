@@ -56,7 +56,7 @@ export function displayCoordinateGrid(shouldDisplay: boolean) {
 
 export function attackTarget(player: Player, enemy: Enemy) {
 	// Create projectile
-	const projectile = makePlayerProjectile(player.pos.add(35, -40));
+	const projectile = makePlayerProjectile(player.pos.add(35, 20));
 	// Setup listener
 	const targetTag = String(k.time()) + "target";
 	enemy.tag(targetTag);

@@ -22,7 +22,9 @@ export function addWord(hostEnemy: Enemy, challengeWord: string): WordObj {
 		"challengeWord",
 		k.text(challengeWord, {
 			align: "center",
-			font: gameStateManager.font,
+			font: gameStateManager.hardMode
+				? "matoran-font"
+				: gameStateManager.font,
 			size: gameConstants.CHALLENGE_WORD_SIZE,
 		}),
 		k.anchor("bot"),
@@ -50,7 +52,9 @@ export function addWordShadow(
 		"challengeWordShadow",
 		k.text(challengeWord, {
 			align: "center",
-			font: gameStateManager.font,
+			font: gameStateManager.hardMode
+				? "matoran-font"
+				: gameStateManager.font,
 			size: gameConstants.CHALLENGE_WORD_SIZE,
 		}),
 		k.anchor("bot"),
