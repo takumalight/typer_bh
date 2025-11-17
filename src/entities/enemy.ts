@@ -24,6 +24,7 @@ export type Enemy = GameObj<
 
 type EnemyData = {
 	speed: number;
+	spawnWeight: number;
 	spawnUpperLimit: number;
 	spawnLowerLimit: number;
 	spriteName: string;
@@ -49,6 +50,7 @@ export function makeEnemy(): Enemy {
 	const enemyData: Record<string, EnemyData> = {
 		axlerex: {
 			speed: 100,
+			spawnWeight: 3,
 			spawnUpperLimit: 510,
 			spawnLowerLimit: k.height() - 75,
 			spriteName: "axlerex",
@@ -56,6 +58,7 @@ export function makeEnemy(): Enemy {
 		},
 		foohrok: {
 			speed: 175,
+			spawnWeight: 2,
 			spawnUpperLimit: 510,
 			spawnLowerLimit: k.height() - 75,
 			spriteName: "foohrok",
@@ -63,6 +66,7 @@ export function makeEnemy(): Enemy {
 		},
 		rama: {
 			speed: 300,
+			spawnWeight: 1,
 			spawnUpperLimit: 175,
 			spawnLowerLimit: 400,
 			spriteName: "rama",
@@ -76,8 +80,14 @@ export function makeEnemy(): Enemy {
 		},
 	};
 
+	const weightedList: string[] = [];
 	const keys = Object.keys(enemyData);
-	const randKey = keys[k.randi(keys.length)];
+	for (const key of keys) {
+		for (let i = 0; i < enemyData[key].spawnWeight; i++) {
+			weightedList.push(enemyData[key].spriteName);
+		}
+	}
+	const randKey = weightedList[k.randi(weightedList.length)];
 	const randEnemy = enemyData[randKey];
 
 	const randSpawnY = k.randi(
