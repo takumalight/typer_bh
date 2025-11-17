@@ -63,7 +63,7 @@ export function loadGame() {
 			const shadowObj: WordShadowObj = enemyChildren[0] as WordShadowObj;
 
 			// Check for correct letter typed
-			if (wordObj.text[wordObj.currentIndex] == key) {
+			if (wordObj.text[wordObj.currentIndex].toLowerCase() == key) {
 				wordObj.currentIndex++;
 				// Don't require spaces to be typed
 				if (wordObj.text[wordObj.currentIndex] === " ")
@@ -111,7 +111,7 @@ export function loadGame() {
 	// Spawning enemies
 	let spawnSpeed = gameConstants.SPAWN_INITIAL_RATE;
 	const spawnEnemy = () => {
-		const randWord = wordBank[k.randi(wordBank.length)];
+		const randWord = wordBank[k.randi(wordBank.length)].toUpperCase();
 
 		const enemy = makeEnemy();
 		addWordShadow(enemy, randWord);
