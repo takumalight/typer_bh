@@ -73,6 +73,9 @@ export function loadGame() {
 				if (wordObj.currentIndex == wordObj.text.length) {
 					completedWord = true;
 
+					// Disable collision with fail zone
+					enemy.untag("enemy");
+
 					// Update scoreboard
 					score += wordObj.text.length * (wordObj.parent?.speed / 25);
 					const newScore = updateScore(score);
