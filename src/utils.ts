@@ -1,12 +1,4 @@
-import type {
-	GameObj,
-	TextComp,
-	PosComp,
-	AnchorComp,
-	ZComp,
-	ColorComp,
-	LayerComp,
-} from "kaplay";
+import type { GameObj } from "kaplay";
 import k from "./kaplayCtx";
 import { gameConstants } from "./constants";
 import { makePlayerProjectile } from "./entities/projectile";
@@ -14,21 +6,21 @@ import type { Player } from "./entities/player";
 import type { Enemy } from "./entities/enemy";
 import { gameStateManager } from "./main";
 
-export type TextShadow = GameObj<
-	TextComp | PosComp | AnchorComp | ZComp | ColorComp | LayerComp
->;
+export type TextShadow = ReturnType<typeof addTextShadow>;
 
-export function addTextShadow(textObj: GameObj): TextShadow {
+export function addTextShadow(textObj: GameObj) {
 	return k.add([
 		k.text(textObj.text, {
 			font: textObj.font,
 			size: textObj.textSize,
 			align: textObj.align,
+			width: textObj.width != undefined ? textObj.width : undefined,
 		}),
 		k.anchor(textObj.anchor),
-		k.layer(textObj.layer),
-		k.pos(textObj.pos.x + 5, textObj.pos.y + 5),
 		k.color("#000000"),
+		k.layer(textObj.layer),
+		k.opacity(textObj.opacity != undefined ? textObj.opacity : 1),
+		k.pos(textObj.pos.x + 5, textObj.pos.y + 5),
 		k.z(gameConstants.TEXT_SHADOW_Z),
 	]);
 }

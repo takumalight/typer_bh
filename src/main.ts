@@ -16,10 +16,22 @@ k.loadSprite("avohkahtamer", "graphics/characters/bh_spritesheet_at.png", {
 		idle: 0,
 		walk: { from: 8, to: 13, loop: true, speed: 8 },
 		run: { from: 16, to: 23, loop: true, speed: 15 },
-		attack: { from: 24, to: 27, loop: false, speed: 20 },
-		backswing: { from: 28, to: 29, loop: false, speed: 20 },
+		attack: { from: 24, to: 27, loop: false, speed: 15 },
+		backswing: { from: 28, to: 29, loop: false, speed: 15 },
 	},
 });
+k.loadSprite("ven", "graphics/characters/bh_spritesheet_ven.png", {
+	sliceX: 8,
+	sliceY: 6,
+	anims: {
+		idle: 0,
+		walk: { from: 8, to: 15, loop: true, speed: 8 },
+		run: { from: 16, to: 23, loop: true, speed: 15 },
+		attack: { from: 24, to: 29, loop: false, speed: 15 },
+		backswing: { from: 30, to: 33, loop: false, speed: 15 },
+	},
+});
+
 k.loadSprite("axlerex", "graphics/enemies/new_axlerex.png", {
 	sliceX: 8,
 	sliceY: 4,
