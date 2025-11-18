@@ -1,23 +1,13 @@
 import type { Enemy } from "./enemy";
 import k from "../kaplayCtx";
-import type { GameObj, TextComp, PosComp, AnchorComp, ColorComp } from "kaplay";
+import type { GameObj, TextComp } from "kaplay";
 import { gameConstants } from "../constants";
 import { gameStateManager } from "../main";
 
-export type WordObj = GameObj<
-	| PosComp
-	| AnchorComp
-	| TextComp
-	| {
-			currentIndex: number;
-			add(this: GameObj<TextComp & { currentIndex: number }>): void;
-	  }
->;
-export type WordShadowObj = GameObj<
-	TextComp | PosComp | AnchorComp | ColorComp
->;
+export type WordObj = ReturnType<typeof addWord>;
+export type BoxObj = ReturnType<typeof addWordBox>;
 
-export function addWord(hostEnemy: Enemy, challengeWord: string): WordObj {
+export function addWord(hostEnemy: Enemy, challengeWord: string) {
 	return hostEnemy.add([
 		"challengeWord",
 		k.text(challengeWord, {
@@ -27,8 +17,9 @@ export function addWord(hostEnemy: Enemy, challengeWord: string): WordObj {
 				: gameStateManager.font,
 			size: gameConstants.CHALLENGE_WORD_SIZE,
 		}),
-		k.anchor("bot"),
-		k.pos(0, -20),
+		k.anchor("center"),
+		k.pos(0, -30),
+		k.z(2),
 		{
 			currentIndex: 0,
 			add(this: GameObj<TextComp | { currentIndex: number }>): void {
@@ -44,7 +35,21 @@ export function addWord(hostEnemy: Enemy, challengeWord: string): WordObj {
 	]);
 }
 
-export function addWordShadow(
+export function addWordBox(hostEnemy: Enemy, width: number, height: number) {
+	return hostEnemy.add([
+		"challengeWordBox",
+		k.rect(width + 4, height + 2, {
+			radius: 3,
+		}),
+		k.anchor("center"),
+		k.color(k.rgb("#000000")),
+		k.opacity(1),
+		k.pos(0, -30),
+		k.z(1),
+	]);
+}
+
+/* export function addWordShadow(
 	hostEnemy: Enemy,
 	challengeWord: string
 ): WordShadowObj {
@@ -61,4 +66,4 @@ export function addWordShadow(
 		k.color("#000000"),
 		k.pos(1, -19),
 	]);
-}
+} */

@@ -3,9 +3,9 @@ import { makeEnemy, type Enemy } from "../entities/enemy";
 import { makePlayer } from "../entities/player";
 import {
 	addWord,
-	addWordShadow,
+	addWordBox,
+	type BoxObj,
 	type WordObj,
-	type WordShadowObj,
 } from "../entities/wordObjs";
 import k from "../kaplayCtx";
 import { gameStateManager } from "../main";
@@ -60,7 +60,7 @@ export function loadGame() {
 		for (const enemy of enemies) {
 			const enemyChildren = enemy.children;
 			const wordObj: WordObj = enemyChildren[1] as WordObj;
-			const shadowObj: WordShadowObj = enemyChildren[0] as WordShadowObj;
+			const boxObj: BoxObj = enemyChildren[0] as BoxObj;
 
 			// Check for correct letter typed
 			if (wordObj.text[wordObj.currentIndex].toLowerCase() == key) {
@@ -75,6 +75,7 @@ export function loadGame() {
 
 					// Disable collision with fail zone
 					enemy.untag("enemy");
+					enemy.unuse("offscreen");
 
 					// Update scoreboard
 					score += wordObj.text.length * (wordObj.parent?.speed / 25);
@@ -82,9 +83,10 @@ export function loadGame() {
 					scoreboard.text = newScore;
 					scoreboardShadow.text = newScore;
 
-					// After calculating score, remove text from word objects to avoid typing conflicts
+					// After calculating score, remove text from word object to avoid typing conflicts
 					wordObj.text = "";
-					shadowObj.text = "";
+					// Hide the word background box
+					boxObj.opacity = 0;
 
 					// Attack the enemy
 					player.play("attack", {
@@ -114,8 +116,10 @@ export function loadGame() {
 		const randWord = wordBank[k.randi(wordBank.length)].toUpperCase();
 
 		const enemy = makeEnemy();
-		addWordShadow(enemy, randWord);
-		addWord(enemy, randWord);
+
+		const wordObj = addWord(enemy, randWord);
+		addWordBox(enemy, wordObj.width, wordObj.height);
+
 		enemy.onUpdate(() => {
 			enemy.move(-enemy.speed, 0);
 		});
