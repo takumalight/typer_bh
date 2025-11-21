@@ -89,12 +89,16 @@ export function loadGame() {
 					// Hide the word background box
 					boxObj.opacity = 0;
 
-					// Attack the enemy
-					player.play("attack", {
-						onEnd() {
-							attackTarget(player, enemy);
-						},
-					});
+					// Attack the enemy, accelerating the process if an attack is already in progressy
+					if (player.getCurAnim()?.name === "attack") {
+						attackTarget(player, enemy);
+					} else {
+						player.play("attack", {
+							onEnd() {
+								attackTarget(player, enemy);
+							},
+						});
+					}
 					break;
 				}
 			} else {
