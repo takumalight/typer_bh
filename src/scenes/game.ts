@@ -33,6 +33,7 @@ export function loadGame() {
 			font: gameStateManager.font,
 			size: gameConstants.SCOREBOARD_TEXT_SIZE,
 			align: "left",
+			width: k.width(),
 		}),
 		k.anchor("topleft"),
 		k.pos(35, 25),
@@ -128,7 +129,7 @@ export function loadGame() {
 	};
 
 	// Level start "cutscene"
-	const player = makePlayer(k.vec2(-50, 585), "avohkahtamer");
+	const player = makePlayer(k.vec2(-50, 585), gameStateManager.character);
 	player.animate("pos", [player.pos, k.vec2(100, player.pos.y)], {
 		duration: 3,
 		loops: 1,

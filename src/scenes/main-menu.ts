@@ -44,7 +44,7 @@ export function loadMainMenu() {
 
 	const startButtonDecor = startButton.add([
 		"button-decor",
-		k.sprite("avohkahtamer", { anim: "run" }),
+		k.sprite(gameStateManager.character, { anim: "run" }),
 		k.anchor("center"),
 		k.pos(-startButton.width / 2 - 60, -10),
 		k.scale(gameConstants.SPRITE_SCALE),
@@ -219,7 +219,7 @@ export function loadMainMenu() {
 
 	const charSelectButtonDecor = charSelectButton.add([
 		"button-decor",
-		k.sprite("avohkahtamer", { anim: "run" }),
+		k.sprite(gameStateManager.character, { anim: "run" }),
 		k.anchor("center"),
 		k.pos(-charSelectButton.width / 2 - 60, -10),
 		k.scale(gameConstants.SPRITE_SCALE),
@@ -259,7 +259,7 @@ export function loadMainMenu() {
 
 	const settingsButtonsDecor = settingsButton.add([
 		"button-decor",
-		k.sprite("avohkahtamer", { anim: "run" }),
+		k.sprite(gameStateManager.character, { anim: "run" }),
 		k.anchor("center"),
 		k.pos(-settingsButton.width / 2 - 60, -10),
 		k.scale(gameConstants.SPRITE_SCALE),

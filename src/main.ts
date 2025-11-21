@@ -79,10 +79,13 @@ k.scene("game-over", loadGameOver);
 // State
 const loadFontPref: string = k.getData("pref-font") ?? "voya-nui";
 const loadShakePref: boolean = k.getData("pref-shake") ?? true;
+const loadCharPref: string = k.getData("pref-char") ?? "avohkahtamer";
+
 export const gameStateManager = {
+	character: loadCharPref,
+	font: loadFontPref,
 	hardMode: false,
 	menuOpen: false,
-	font: loadFontPref,
 	shake: loadShakePref,
 };
 
